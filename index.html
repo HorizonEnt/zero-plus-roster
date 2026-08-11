@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO+ | Valorant Esports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     HOW TO UPDATE THIS PAGE (no coding needed)
+     ------------------------------------------------------------
+     1. Open this file in any text editor (Notepad, TextEdit, VS Code).
+     2. Scroll down to the section that says "EDIT YOUR TEAM DATA HERE".
+     3. Change the text between the quotes " " for each field.
+        - Don't delete commas, quotes, or curly brackets { }.
+        - To add a 6th player, copy one whole { ... } player block,
+          paste it before the closing ] bracket, and add a comma
+          after the previous player's closing }.
+     4. Save the file and re-open it in your browser (or re-upload
+        it to your host) to see the changes.
+     ============================================================ -->
+
+<style>
+  :root {
+    /* ---- Color tokens ---- */
+    --bg-void: #101319;
+    --bg-panel: #171B23;
+    --bg-panel-raised: #1E232D;
+    --line: #2A303C;
+    --text-primary: #ECEEF2;
+    --text-muted: #8C93A3;
+    --accent-signal: #FF3B4E;   /* alert red — used sparingly */
+    --accent-gold: #D9B25C;     /* rank / tier gold */
+    --accent-cool: #5B8CA8;     /* steel blue — secondary accent */
+
+    /* ---- Type tokens ---- */
+    --font-display: 'Rajdhani', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-void);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Faint crosshair grid ambience */
+  .crosshair-field {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.05;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(16, 19, 25, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+  .brandmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+  }
+  .brandmark .plus {
+    color: var(--accent-signal);
+    font-size: 22px;
+  }
+  .navlinks {
+    display: flex;
+    gap: 32px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .navlinks a:hover { color: var(--text-primary); }
+  @media (max-width: 640px) { .navlinks { display: none; } }
+
+  /* ---------- HERO ---------- */
+  header.hero {
+    padding: 96px 0 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-cool);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: var(--accent-cool);
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(56px, 11vw, 128px);
+    line-height: 0.92;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+  }
+  .hero h1 span { color: var(--accent-signal); }
+  .hero p.tagline {
+    max-width: 560px;
+    margin-top: 22px;
+    font-size: 17px;
+    color: var(--text-muted);
+  }
+
+  .quickfacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-top: 44px;
+    border-top: 1px solid var(--line);
+  }
+  .quickfacts .fact {
+    flex: 1 1 140px;
+    padding: 18px 24px 0 0;
+    border-right: 1px solid var(--line);
+  }
+  .quickfacts .fact:last-child { border-right: none; }
+  .fact .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .fact .value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    margin-top: 6px;
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section { padding: 80px 0; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+  }
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 34px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .section-head .count {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ---------- ROSTER ---------- */
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .player-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    padding: 24px 20px;
+    position: relative;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .player-card:hover {
+    border-color: var(--accent-signal);
+    transform: translateY(-3px);
+  }
+  .player-card .reticle {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 16px;
+    height: 16px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .player-card:hover .reticle { opacity: 1; }
+  .reticle::before, .reticle::after {
+    content: "";
+    position: absolute;
+    background: var(--accent-signal);
+  }
+  .reticle::before { width: 16px; height: 1px; top: 7.5px; left: 0; }
+  .reticle::after { width: 1px; height: 16px; left: 7.5px; top: 0; }
+
+  .player-role {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-cool);
+  }
+  .player-ign {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+  .player-name {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .player-rank-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .rank-badge {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-gold);
+  }
+  .peak-rank {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ---------- STATS BAND ---------- */
+  .stats-band {
+    background: var(--bg-panel);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+  .stat {
+    padding: 44px 24px;
+    border-right: 1px solid var(--line);
+    text-align: left;
+  }
+  .stat:last-child { border-right: none; }
+  .stat .num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 46px;
+    line-height: 1;
+  }
+  .stat .num.positive { color: var(--accent-signal); }
+  .stat .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 10px;
+  }
+
+  /* ---------- SCRIM CTA ---------- */
+  .scrim-cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    background: var(--bg-panel-raised);
+    border: 1px solid var(--line);
+    padding: 44px;
+  }
+  .scrim-cta h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 30px;
+    text-transform: uppercase;
+  }
+  .scrim-cta p { color: var(--text-muted); margin-top: 8px; max-width: 420px; }
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+  .contact-list .k { color: var(--text-muted); margin-right: 8px; }
+  .btn-primary {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 14px 28px;
+    background: var(--accent-signal);
+    color: #101319;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+  .btn-primary:hover { background: #ff5a6b; }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  footer .socials { display: flex; gap: 18px; font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+
+<div class="crosshair-field"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brandmark"><span class="plus">+</span>ZERO PLUS</div>
+    <div class="navlinks">
+      <a href="#roster">Roster</a>
+      <a href="#stats">Stats</a>
+      <a href="#scrims">Scrims</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow" id="game-tag">VALORANT ESPORTS</div>
+    <h1>ZERO<span>+</span></h1>
+    <p class="tagline" id="tagline">Precision over noise. Zero Plus is built to close out rounds, not just win maps.</p>
+
+    <div class="quickfacts" id="quickfacts">
+      <!-- filled by data below -->
+    </div>
+  </div>
+</header>
+
+<section class="section" id="roster">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Roster</h2>
+      <div class="count" id="roster-count"></div>
+    </div>
+    <div class="roster-grid" id="roster-grid"></div>
+  </div>
+</section>
+
+<section class="stats-band" id="stats">
+  <div class="wrap">
+    <div class="stats-grid" id="stats-grid"></div>
+  </div>
+</section>
+
+<section class="section" id="scrims">
+  <div class="wrap">
+    <div class="scrim-cta">
+      <div>
+        <h3>Request a scrim</h3>
+        <p>We take practice matches against teams at or above our current rank tier. Reach out through Discord or email below.</p>
+        <a class="btn-primary" href="#" id="contact-btn">Contact us</a>
+      </div>
+      <div class="contact-list" id="contact-list"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:12px;">
+    <div id="footer-name">Zero Plus — Valorant Division</div>
+    <div class="socials" id="footer-socials"></div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   EDIT YOUR TEAM DATA HERE
+   ------------------------------------------------------------
+   Everything the page displays comes from this one object.
+   Change the text inside the quotes. Leave the structure
+   (commas, brackets, quotes) exactly as it is.
+   ============================================================ */
+
+const TEAM_DATA = {
+  orgName: "ZERO PLUS",
+  game: "VALORANT ESPORTS",
+  tagline: "Precision over noise. Zero Plus is built to close out rounds, not just win maps.",
+
+  quickFacts: [
+    { label: "Region", value: "APAC" },
+    { label: "Founded", value: "2024" },
+    { label: "Division", value: "Valorant" },
+    { label: "Status", value: "Scrim Ready" }
+  ],
+
+  // One block per player. Copy a whole { ... } block to add more.
+  roster: [
+    { role: "Duelist",     ign: "PLAYER1", realName: "Full Name", rank: "Ascendant 2", peak: "Peak: Immortal 1" },
+    { role: "Controller",  ign: "PLAYER2", realName: "Full Name", rank: "Ascendant 3", peak: "Peak: Ascendant 3" },
+    { role: "Initiator",   ign: "PLAYER3", realName: "Full Name", rank: "Immortal 1",  peak: "Peak: Immortal 2" },
+    { role: "Sentinel",    ign: "PLAYER4", realName: "Full Name", rank: "Ascendant 1", peak: "Peak: Ascendant 2" },
+    { role: "IGL / Flex",  ign: "PLAYER5", realName: "Full Name", rank: "Ascendant 2", peak: "Peak: Immortal 1" }
+  ],
+
+  teamStats: [
+    { value: "Ascendant 2", label: "Team Rank (avg)", positive: false },
+    { value: "62%",         label: "Win Rate",        positive: true },
+    { value: "1.14",        label: "Round Ratio (W/L)", positive: true },
+    { value: "38",          label: "Scrims Played",   positive: false }
+  ],
+
+  contact: {
+    discord: "discord.gg/yourinvite",
+    email: "contact@zeroplus.gg",
+    manager: "Manager: Your Name"
+  },
+
+  socials: ["Twitter/X", "Instagram", "YouTube"]
+};
+
+/* ============================================================
+   Rendering logic below — no need to edit past this point.
+   ============================================================ */
+
+document.getElementById('game-tag').textContent = TEAM_DATA.game;
+document.getElementById('tagline').textContent = TEAM_DATA.tagline;
+
+const qf = document.getElementById('quickfacts');
+TEAM_DATA.quickFacts.forEach(f => {
+  qf.innerHTML += `<div class="fact"><div class="label">${f.label}</div><div class="value">${f.value}</div></div>`;
+});
+
+document.getElementById('roster-count').textContent = `${TEAM_DATA.roster.length} ACTIVE`;
+const rg = document.getElementById('roster-grid');
+TEAM_DATA.roster.forEach(p => {
+  rg.innerHTML += `
+    <div class="player-card">
+      <div class="reticle"></div>
+      <div class="player-role">${p.role}</div>
+      <div class="player-ign">${p.ign}</div>
+      <div class="player-name">${p.realName}</div>
+      <div class="player-rank-row">
+        <div class="rank-badge">${p.rank}</div>
+        <div class="peak-rank">${p.peak}</div>
+      </div>
+    </div>`;
+});
+
+const sg = document.getElementById('stats-grid');
+TEAM_DATA.teamStats.forEach(s => {
+  sg.innerHTML += `
+    <div class="stat">
+      <div class="num${s.positive ? ' positive' : ''}">${s.value}</div>
+      <div class="label">${s.label}</div>
+    </div>`;
+});
+
+document.getElementById('contact-list').innerHTML = `
+  <div><span class="k">Discord</span>${TEAM_DATA.contact.discord}</div>
+  <div><span class="k">Email</span>${TEAM_DATA.contact.email}</div>
+  <div><span class="k">Contact</span>${TEAM_DATA.contact.manager}</div>`;
+document.getElementById('contact-btn').href = "mailto:" + TEAM_DATA.contact.email;
+
+document.getElementById('footer-name').textContent = `${TEAM_DATA.orgName} — Valorant Division`;
+document.getElementById('footer-socials').innerHTML = TEAM_DATA.socials.map(s => `<span>${s}</span>`).join('');
+</script>
+
+</body>
+</html>
